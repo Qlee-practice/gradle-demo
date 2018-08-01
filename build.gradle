@@ -1,0 +1,29 @@
+plugins {
+    id "com.github.lkishalmi.gatling" version "0.7.3"
+}
+
+
+def env = project.hasProperty('e') ? project.getProperty('e') : 'qa'
+
+project.sourceSets {
+    gatling {
+        scala.srcDirs = ['src/gatling']
+        resources.srcDirs = ["src/gatling/resources/data-$env"]
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+tasks.getByName("gatlingRun") {
+    it.doFirst {
+        println "This is do first $env"
+    }
+}
+
+dependencies {
+    gatling 'com.google.code.gson:gson:2.8.0'
+    gatlingCompile 'org.apache.commons:commons-lang3:3.4'
+    gatlingRuntime 'cglib:cglib-nodep:3.2.0'
+}
